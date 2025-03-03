@@ -1,0 +1,220 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Webhook').item.json.body.number }}"
+      },
+      "id": "00a01087-041c-4bd7-a70d-de41d9510015",
+      "name": "Window Buffer Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.2,
+      "position": [
+        380,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://evolution.random.biz/evolutionBot/changeStatus/Production-instance",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "=tu-clave-API-super-secreta"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"remoteJid\": \"{{ $json.key.remoteJid }}\",\n    \"status\": \"closed\"\n}",
+        "options": {}
+      },
+      "id": "0149dcad-2387-472d-ad82-256193dd7a4e",
+      "name": "cerrar sesion",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1040,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{\n    json: {\n        output: $json.output\n            .replace(/\\n+/g, '\\\\n')  // Convierte saltos de línea en \\n escapados\n            .replace(/\\\\n\\s+/g, '\\\\n')  // Elimina espacios extra después de cada \\n\n            .replace(/\\s+\\\\n/g, '\\\\n')  // Elimina espacios extra antes de cada \\n\n            .replace(/\\\\n\\\\n/g, '\\\\n')  // Reduce múltiples \\n consecutivos a uno solo\n            .trim()\n    }\n}];"
+      },
+      "id": "a23a19fc-f06b-45ab-beb9-2e041231c965",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini-2024-07-18",
+        "options": {}
+      },
+      "id": "5571dba8-07b6-4bf9-b065-0782deffc9ef",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        260,
+        260
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "0tFwhsh6JmmLZMf5",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://evolution.random.biz/message/sendText/Production-instance",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "=tu-clave-API-super-secreta"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"number\": \"{{ $('Webhook').item.json.body.number }}\",\n    \"text\": \"{{ $json.output }}\"\n}",
+        "options": {}
+      },
+      "id": "d36cdf3f-a44c-4d99-ae7d-72d35b54e406",
+      "name": "Enviar texto",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "69d6683b-55ed-47e1-ad36-dce7a7e1c751",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "fe88a308-5000-4204-8867-ae81e6ac40ce",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        100,
+        0
+      ],
+      "webhookId": "69d6683b-55ed-47e1-ad36-dce7a7e1c751"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=El usuario necesita información sobre: {{ $('Webhook').item.json.body.query }}",
+        "options": {
+          "systemMessage": "=Eres un asistente muy amable de la comunidad VA360. Ayudas a Valen a gestionar sus citas de consultoría.\n\nRespuestas muy cortas y concisas. Sin ningún tipo de caracter especial\nNo añadas enlaces de ningún tipo. Solo la información que te he dicho.\n\nNo des cita en días festivos de españa. Si el usuario te pide cita tiene que darte un datetime_start y tu tienes que devolver un datetime_end que es 60 minutos más que el datetime_start\n\nAntes de confirmar una cita pide el nombre al usuario.\n\nVA360 es una comunidad privada de Valen en la que hay personas profesionales de la inteligencia artificial, el marketing y los negocios online. Para acceder hay que hacerlo a través de su web va360.pro y realizar un pago anual.\n\nVA360 también tiene una academia en la que tenemos cursos de automatizaciones de procesos con N8N y Make (integromat).\n\nSomos más de 400 personas trabajando cada día para compartir información y estar a la última de los negocios online y la inteligencia artificial.\n\nLa fecha y hora de ahora mismo es: {{ $now }}"
+        }
+      },
+      "id": "3efd0828-df03-432a-b8bc-f7f5277f1e0f",
+      "name": "CITA&INFO",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        380,
+        0
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "CITA&INFO",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "CITA&INFO",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar texto": {
+      "main": [
+        [
+          {
+            "node": "cerrar sesion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "CITA&INFO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CITA&INFO": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b2ceb8eb-d91b-4e16-b189-c75d3242a9b3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3ceded42ae2d8cbb14636026c5ee2f25e41b4a3ce8f90f0f168ca18c1dfefeee"
+  },
+  "id": "ppI3PUcfrwqCFVBC",
+  "tags": []
+}
