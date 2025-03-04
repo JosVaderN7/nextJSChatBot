@@ -1,4 +1,5 @@
 import Image from "next/image";
+import DeepChatClient from "./DeepChatClient";
 
 export default function Home() {
   return (
@@ -19,22 +20,11 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="flex-grow flex flex-col items-center justify-center text-center p-8 text-black">
-        <h1 className="text-4xl font-bold mb-4">Welcome to MyApp</h1>
-        <p className="text-lg mb-8 text-gray-900">The best platform to manage your projects efficiently.</p>
         <div className="flex gap-4">
-          <a
-            href="/signup"
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
-            Get Started
-          </a>
-          <a
-            href="/learn-more"
-            className="bg-gray-200 text-gray-900 px-4 py-2 rounded hover:bg-gray-300"
-          >
-            Learn More
-          </a>
+          {/* Aquí puedes agregar más contenido */}
         </div>
+        {/* Deep Chat */}
+        <DeepChatClient />
       </main>
 
       {/* Footer */}
