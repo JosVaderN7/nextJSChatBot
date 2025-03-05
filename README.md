@@ -1,24 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Chatbot con iframe
 
-## Getting Started
+Esta aplicación Next.js muestra un iframe a pantalla completa con un chatbot flotante impulsado por la API de OpenAI.
 
-First, run the development server:
+## Configuración
+
+1. Clona este repositorio
+2. Instala las dependencias:
+```bash
+npm install
+```
+
+3. Crea un archivo `.env.local` en la raíz del proyecto con tu clave de API de OpenAI:
+```
+OPENAI_API_KEY=tu_clave_api_aqui
+```
+
+Puedes obtener una clave de API de OpenAI en [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+
+## Ejecución
+
+Para ejecutar el proyecto en modo desarrollo:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visita `http://localhost:3000` para ver la aplicación.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Características
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Iframe a pantalla completa que muestra un tour interactivo
+- Chatbot flotante en la esquina inferior derecha
+- Integración con la API de OpenAI para respuestas inteligentes
+- Interfaz limpia y fácil de usar
+
+## Personalización
+
+### Modificar el iframe
+
+Puedes cambiar la URL del iframe en `app/page.tsx`:
+
+```jsx
+<iframe 
+  src="tu-nueva-url-aqui"
+  className="absolute top-0 left-0 w-full h-full border-0"
+  title="Tour Interactivo"
+  allow="microphone; camera; accelerometer; gyroscope"
+></iframe>
+```
+
+### Cambiar el modelo de IA
+
+Puedes modificar el modelo de OpenAI utilizado en `app/api/mensaje/route.ts`:
+
+```typescript
+const completion = await openai.chat.completions.create({
+  model: 'gpt-4', // Cambia a gpt-3.5-turbo, gpt-4, etc.
+  messages: formattedMessages,
+  max_tokens: 500,
+});
+```
+
+## Tecnologías utilizadas
+
+- Next.js
+- React
+- TypeScript
+- OpenAI API
+- Deep Chat (para la interfaz del chat)
+- Tailwind CSS (para los estilos)
 
 ## Learn More
 

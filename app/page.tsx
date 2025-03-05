@@ -1,25 +1,19 @@
 import Image from "next/image";
-import DeepChatClient from "./DeepChatClient";
+import FloatingChat from "./components/FloatingChat";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col bg-white">
-      {/* Header */}
+    <div className="relative w-full h-screen overflow-hidden">
+      {/* Iframe que cubre toda la pantalla */}
+      <iframe
+        src="https://app.twinteraction.com/augmentour?m=Hn2tN3wZsjk&name=Reference+Tour+2023&at_config=nsAohad8ey&tw_space_id=255"
+        className="absolute top-0 left-0 w-full h-full border-0"
+        title="Tour Interactivo"
+        allow="microphone; camera; accelerometer; gyroscope"
+      ></iframe>
 
-
-      {/* Main Content */}
-      <main className="flex-grow flex flex-col items-center justify-center text-center p-8 text-black">
-        <div className="flex gap-4">
-          {/* Aquí puedes agregar más contenido */}
-        </div>
-        {/* Deep Chat */}
-        <DeepChatClient />
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white p-4 flex justify-center">
-        <p>&copy; 2025 MyApp. All rights reserved.</p>
-      </footer>
+      {/* Chatbot flotante */}
+      <FloatingChat />
     </div>
   );
 }
