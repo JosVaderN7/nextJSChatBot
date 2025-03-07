@@ -1,15 +1,28 @@
 "use client";
 
 import { useState } from 'react';
+import LanguageSelector from './LanguageSelector';
 import dynamic from "next/dynamic";
 
-const DeepChat = dynamic(() => import("deep-chat-react").then(mod => mod.DeepChat), { ssr: false });
+const DeepChatClient = dynamic(() => import("@/app/DeepChatClient"), { ssr: false });
 
 export default function FloatingChat() {
     const [isOpen, setIsOpen] = useState(false);
+    const [language, setLanguage] = useState('es');
 
     const toggleChat = () => {
         setIsOpen(!isOpen);
+    };
+
+    // Mensaje de bienvenida según el idioma seleccionado
+    const getWelcomeMessage = () => {
+        const welcomeMessages = {
+            es: '👋 ¡Hola! Soy tu guía virtual del Museo. ¿En qué puedo ayudarte hoy?',
+            en: '👋 Hello! I\'m your virtual Museum guide. How can I help you today?',
+            it: '👋 Ciao! Sono la tua guida virtuale del Museo. Come posso aiutarti oggi?'
+        };
+
+        return welcomeMessages[language as keyof typeof welcomeMessages];
     };
 
     return (
@@ -17,27 +30,24 @@ export default function FloatingChat() {
             {isOpen ? (
                 <div className="bg-white rounded-lg shadow-lg overflow-hidden chat-transition flex flex-col" style={{ width: '350px', height: '500px' }}>
                     <div className="bg-gray-800 text-white p-2 flex justify-between items-center">
-                        <h3 className="text-sm font-medium">Chat de Asistencia</h3>
-                        <button
-                            onClick={toggleChat}
-                            className="text-white hover:text-gray-300"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                            </svg>
-                        </button>
+                        <h3 className="text-sm font-medium">Museo Virtual</h3>
+                        <div className="flex items-center">
+                            <LanguageSelector
+                                onLanguageChange={setLanguage}
+                                currentLanguage={language}
+                            />
+                            <button
+                                onClick={toggleChat}
+                                className="ml-2 text-white hover:text-gray-300"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
-                    <div className="flex-grow custom-scrollbar" style={{ height: 'calc(100% - 44px)', overflowY: 'auto' }}>
-                        <DeepChat
-                            connect={{
-                                url: "/api/mensaje",
-                                method: "POST"
-                            }}
-                            style={{
-                                height: '100%',
-                                border: 'none'
-                            }}
-                        />
+                    <div className="flex-grow" style={{ height: 'calc(100% - 44px)', overflowY: 'auto' }}>
+                        <DeepChatClient />
                     </div>
                 </div>
             ) : (

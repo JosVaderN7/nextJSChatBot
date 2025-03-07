@@ -1,86 +1,91 @@
-# Next.js Chatbot con iframe
+# Chatbot RAG para Museo Virtual con Next.js 
 
-Esta aplicación Next.js muestra un iframe a pantalla completa con un chatbot flotante impulsado por la API de OpenAI.
+Este proyecto implementa un chatbot de guía virtual para un museo utilizando Retrieval-Augmented Generation (RAG). El chatbot responde preguntas sobre las exhibiciones del museo y proporciona información contextualmente relevante.
+
+## Características Principales
+
+- **Interfaz de Chat Flotante**: Un chatbot accesible desde cualquier página del sitio
+- **Sistema RAG Completo**: Conecta con Pinecone para recuperar información relevante de la base de datos vectorial
+- **Soporte Multilingüe**: Español, Inglés e Italiano
+- **Personalidad Amigable**: El chatbot tiene una personalidad de guía entusiasta y servicial
+- **Memoria de Conversación**: Mantiene el contexto de los últimos 6 mensajes
+
+## Tecnologías Utilizadas
+
+- **Next.js**: Framework React con App Router
+- **TypeScript**: Para tipo seguro
+- **DeepChat**: Componente de chat para la interfaz de usuario
+- **OpenAI**: Para embeddings y generación de respuestas
+- **Pinecone**: Base de datos vectorial para almacenar y recuperar embeddings
+
+## Arquitectura
+
+El sistema sigue una arquitectura RAG (Retrieval-Augmented Generation):
+
+1. **Preparación de Datos**:
+   - Los datos del museo se almacenan en un archivo JSON con información multilingüe
+   - Los datos se procesan para crear embeddings con OpenAI
+   - Los embeddings se almacenan en Pinecone con metadatos
+
+2. **Flujo de Consulta**:
+   - El usuario hace una pregunta
+   - Se genera un embedding para la consulta
+   - Se buscan documentos similares en Pinecone
+   - Se recuperan los más relevantes
+
+3. **Generación de Respuesta**:
+   - Se combina el prompt del sistema con el contexto recuperado
+   - Se envía a OpenAI para generar una respuesta informativa
+   - La respuesta se muestra al usuario
 
 ## Configuración
 
-1. Clona este repositorio
-2. Instala las dependencias:
+Consulta el archivo [CONFIG.md](./CONFIG.md) para instrucciones detalladas sobre cómo configurar:
+
+- Variables de entorno
+- Cuenta de Pinecone
+- Generación de embeddings
+
+## API Endpoints
+
+- **POST /api/embed**: Genera embeddings de los datos del museo y los almacena en Pinecone
+- **POST /api/retrieve**: Busca información relevante basada en la consulta del usuario
+- **POST /api/chat**: Genera respuestas basadas en el contexto recuperado
+
+## Desarrollo Local
+
 ```bash
+# Instalar dependencias
 npm install
-```
 
-3. Crea un archivo `.env.local` en la raíz del proyecto con tu clave de API de OpenAI:
-```
-OPENAI_API_KEY=tu_clave_api_aqui
-```
+# Configurar variables de entorno (ver CONFIG.md)
 
-Puedes obtener una clave de API de OpenAI en [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys)
-
-## Ejecución
-
-Para ejecutar el proyecto en modo desarrollo:
-
-```bash
+# Iniciar servidor de desarrollo
 npm run dev
+
+# Generar embeddings (ver CONFIG.md)
 ```
 
-Visita `http://localhost:3000` para ver la aplicación.
+## Uso
 
-## Características
-
-- Iframe a pantalla completa que muestra un tour interactivo
-- Chatbot flotante en la esquina inferior derecha
-- Integración con la API de OpenAI para respuestas inteligentes
-- Interfaz limpia y fácil de usar
+1. Accede a la aplicación en `http://localhost:3000`
+2. Haz clic en el icono flotante de chat en la esquina inferior derecha
+3. Selecciona tu idioma preferido (español, inglés o italiano)
+4. Haz preguntas sobre las exhibiciones o el museo
 
 ## Personalización
 
-### Modificar el iframe
+- Puedes modificar los datos del museo en `app/data/museumData.json`
+- Ajusta la personalidad del chatbot en `app/utils/openai.ts`
+- Modifica el diseño visual del chatbot en `app/components/FloatingChat.tsx`
 
-Puedes cambiar la URL del iframe en `app/page.tsx`:
+## Extensiones Futuras
 
-```jsx
-<iframe 
-  src="tu-nueva-url-aqui"
-  className="absolute top-0 left-0 w-full h-full border-0"
-  title="Tour Interactivo"
-  allow="microphone; camera; accelerometer; gyroscope"
-></iframe>
-```
+- Implementar streaming de respuestas
+- Añadir más idiomas
+- Integrar imágenes de las exhibiciones
+- Añadir funcionalidad para recomendar exhibiciones basadas en intereses
 
-### Cambiar el modelo de IA
+## Licencia
 
-Puedes modificar el modelo de OpenAI utilizado en `app/api/mensaje/route.ts`:
-
-```typescript
-const completion = await openai.chat.completions.create({
-  model: 'gpt-4', // Cambia a gpt-3.5-turbo, gpt-4, etc.
-  messages: formattedMessages,
-  max_tokens: 500,
-});
-```
-
-## Tecnologías utilizadas
-
-- Next.js
-- React
-- TypeScript
-- OpenAI API
-- Deep Chat (para la interfaz del chat)
-- Tailwind CSS (para los estilos)
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Este proyecto está bajo la licencia MIT.

@@ -1,0 +1,162 @@
+{
+  "exhibits": [
+    {
+      "id": "exhibit-001",
+      "name": {
+        "es": "La Venus de Milo",
+        "en": "The Venus de Milo",
+        "it": "La Venere di Milo"
+      },
+      "description": {
+        "es": "Escultura griega clásica que se cree representa a Afrodita, creada entre 130 y 100 a.C. Es una obra maestra del arte helenístico que ha cautivado al mundo con su misterio y belleza.",
+        "en": "Classical Greek sculpture believed to depict Aphrodite, created between 130 and 100 BCE. It is a masterpiece of Hellenistic art that has captivated the world with its mystery and beauty.",
+        "it": "Scultura greca classica che si ritiene raffiguri Afrodite, creata tra il 130 e il 100 a.C. È un capolavoro dell'arte ellenistica che ha affascinato il mondo con il suo mistero e la sua bellezza."
+      },
+      "location": {
+        "es": "Sala 7, Planta 1",
+        "en": "Room 7, Floor 1",
+        "it": "Sala 7, Piano 1"
+      },
+      "historical_context": {
+        "es": "Descubierta en 1820 en la isla de Melos. Su creación coincide con el período helenístico tardío. Fue encontrada por un campesino llamado Yorgos Kentrotas y posteriormente adquirida por Francia.",
+        "en": "Discovered in 1820 on the island of Melos. Its creation coincides with the late Hellenistic period. It was found by a farmer named Yorgos Kentrotas and subsequently acquired by France.",
+        "it": "Scoperta nel 1820 sull'isola di Melos. La sua creazione coincide con il tardo periodo ellenistico. Fu trovata da un contadino di nome Yorgos Kentrotas e successivamente acquisita dalla Francia."
+      },
+      "fun_facts": {
+        "es": ["No se sabe con certeza cómo perdió los brazos", "Mide 2.02 metros de altura", "Está hecha de mármol de Paros", "Originalmente estaba pintada con colores brillantes"],
+        "en": ["It's not known for certain how it lost its arms", "It stands 2.02 meters tall", "It's made of Parian marble", "It was originally painted in bright colors"],
+        "it": ["Non si sa con certezza come abbia perso le braccia", "È alta 2,02 metri", "È realizzata in marmo di Paro", "In origine era dipinta con colori vivaci"]
+      }
+    },
+    {
+      "id": "exhibit-002",
+      "name": {
+        "es": "La Mona Lisa",
+        "en": "The Mona Lisa",
+        "it": "La Gioconda"
+      },
+      "description": {
+        "es": "Retrato pintado por Leonardo da Vinci entre 1503 y 1519. Es quizás la obra de arte más famosa del mundo, conocida por su enigmática sonrisa y técnica innovadora.",
+        "en": "Portrait painted by Leonardo da Vinci between 1503 and 1519. It is perhaps the most famous artwork in the world, known for its enigmatic smile and innovative technique.",
+        "it": "Ritratto dipinto da Leonardo da Vinci tra il 1503 e il 1519. È forse l'opera d'arte più famosa al mondo, nota per il suo sorriso enigmatico e la tecnica innovativa."
+      },
+      "location": {
+        "es": "Sala 10, Planta 2",
+        "en": "Room 10, Floor 2",
+        "it": "Sala 10, Piano 2"
+      },
+      "historical_context": {
+        "es": "Se cree que es un retrato de Lisa Gherardini, esposa de Francesco del Giocondo. La pintura fue adquirida por el rey Francisco I de Francia y ahora se encuentra en el Louvre de París.",
+        "en": "Believed to be a portrait of Lisa Gherardini, wife of Francesco del Giocondo. The painting was acquired by King Francis I of France and is now housed in the Louvre in Paris.",
+        "it": "Si ritiene sia un ritratto di Lisa Gherardini, moglie di Francesco del Giocondo. Il dipinto fu acquisito dal re Francesco I di Francia e ora si trova al Louvre di Parigi."
+      },
+      "fun_facts": {
+        "es": ["Fue robada del Louvre en 1911", "Está pintada en una tabla de álamo", "Mide solo 77 x 53 cm", "Leonardo utilizó la técnica del 'sfumato'"],
+        "en": ["It was stolen from the Louvre in 1911", "It's painted on a poplar panel", "It measures only 77 x 53 cm", "Leonardo used the 'sfumato' technique"],
+        "it": ["Fu rubata dal Louvre nel 1911", "È dipinta su un pannello di pioppo", "Misura solo 77 x 53 cm", "Leonardo ha utilizzato la tecnica dello 'sfumato'"]
+      }
+    },
+    {
+      "id": "exhibit-003",
+      "name": {
+        "es": "La Noche Estrellada",
+        "en": "The Starry Night",
+        "it": "La Notte Stellata"
+      },
+      "description": {
+        "es": "Obra maestra del pintor Vincent van Gogh, creada en junio de 1889. Representa la vista desde la ventana de su habitación en el sanatorio de Saint-Rémy-de-Provence, con adiciones imaginarias.",
+        "en": "Masterpiece by painter Vincent van Gogh, created in June 1889. It depicts the view from the window of his room at the Saint-Rémy-de-Provence sanatorium, with imaginative additions.",
+        "it": "Capolavoro del pittore Vincent van Gogh, creato nel giugno 1889. Raffigura la vista dalla finestra della sua stanza nel sanatorio di Saint-Rémy-de-Provence, con aggiunte immaginarie."
+      },
+      "location": {
+        "es": "Sala 12, Planta 3",
+        "en": "Room 12, Floor 3",
+        "it": "Sala 12, Piano 3"
+      },
+      "historical_context": {
+        "es": "Van Gogh creó esta obra durante su estancia voluntaria en el asilo de Saint-Rémy. Fue un período prolífico a pesar de sus luchas con la salud mental.",
+        "en": "Van Gogh created this work during his voluntary stay at the Saint-Rémy asylum. It was a prolific period despite his struggles with mental health.",
+        "it": "Van Gogh creò quest'opera durante il suo soggiorno volontario nell'asilo di Saint-Rémy. Fu un periodo prolifico nonostante le sue lotte con la salute mentale."
+      },
+      "fun_facts": {
+        "es": ["La pintura original no se consideró importante en vida de Van Gogh", "El ciprés central fue un añadido compositivo", "Los colores son más intensos que la realidad", "Pintó más de 20 versiones de cielos estrellados"],
+        "en": ["The original painting wasn't considered important during Van Gogh's lifetime", "The central cypress was a compositional addition", "The colors are more intense than reality", "He painted more than 20 versions of starry skies"],
+        "it": ["Il dipinto originale non era considerato importante durante la vita di Van Gogh", "Il cipresso centrale era un'aggiunta compositiva", "I colori sono più intensi della realtà", "Ha dipinto più di 20 versioni di cieli stellati"]
+      }
+    }
+  ],
+  "tours": [
+    {
+      "id": "tour-classic",
+      "name": {
+        "es": "Tour Clásico",
+        "en": "Classical Tour",
+        "it": "Tour Classico"
+      },
+      "exhibits": ["exhibit-001", "exhibit-002"],
+      "duration": {
+        "es": "60 minutos",
+        "en": "60 minutes",
+        "it": "60 minuti"
+      },
+      "recommended_for": {
+        "es": ["Principiantes", "Amantes del arte clásico"],
+        "en": ["Beginners", "Classical art lovers"],
+        "it": ["Principianti", "Amanti dell'arte classica"]
+      }
+    },
+    {
+      "id": "tour-modern",
+      "name": {
+        "es": "Tour Arte Moderno",
+        "en": "Modern Art Tour",
+        "it": "Tour Arte Moderna"
+      },
+      "exhibits": ["exhibit-003"],
+      "duration": {
+        "es": "45 minutos",
+        "en": "45 minutes",
+        "it": "45 minuti"
+      },
+      "recommended_for": {
+        "es": ["Entusiastas del color", "Interesados en el impresionismo"],
+        "en": ["Color enthusiasts", "Those interested in impressionism"],
+        "it": ["Appassionati di colore", "Interessati all'impressionismo"]
+      }
+    }
+  ],
+  "general_info": {
+    "museum_name": {
+      "es": "Museo Nacional de Arte",
+      "en": "National Art Museum",
+      "it": "Museo Nazionale d'Arte"
+    },
+    "opening_hours": {
+      "es": "Martes a Domingo: 10:00 - 20:00, Lunes: Cerrado",
+      "en": "Tuesday to Sunday: 10:00 - 20:00, Monday: Closed",
+      "it": "Martedì a Domenica: 10:00 - 20:00, Lunedì: Chiuso"
+    },
+    "facilities": {
+      "es": ["Cafetería", "Tienda", "Guardarropa", "Acceso para discapacitados"],
+      "en": ["Cafeteria", "Gift Shop", "Cloakroom", "Disabled Access"],
+      "it": ["Caffetteria", "Negozio", "Guardaroba", "Accesso per disabili"]
+    },
+    "tickets": {
+      "es": {
+        "adultos": "15€",
+        "estudiantes": "8€",
+        "niños_menores_12": "Gratis"
+      },
+      "en": {
+        "adults": "15€",
+        "students": "8€",
+        "children_under_12": "Free"
+      },
+      "it": {
+        "adulti": "15€",
+        "studenti": "8€",
+        "bambini_sotto_12": "Gratuito"
+      }
+    }
+  }
+} 
