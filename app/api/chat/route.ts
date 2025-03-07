@@ -15,33 +15,36 @@ interface ChatMessage {
  */
 export async function POST(req: NextRequest) {
     try {
-        console.log("Recibida solicitud de chat");
+        console.log("Received chat request");
 
         // Obtener datos de la solicitud
         const body = await req.json();
-        console.log("Body de la solicitud:", JSON.stringify(body, null, 2));
+        console.log("Request body:", JSON.stringify(body, null, 2));
 
         // Compatibilidad con DeepChat
         let messages: ChatMessage[] = body.messages || [];
         let retrievedContext = body.retrievedContext || "";
-        let language = body.language || req.headers.get('x-language') || 'es';
+        let systemInstruction = body.systemInstruction || "";
+        
+        // English is now the only language
+        const lang = 'en';
 
         // Compatibilidad con diferentes formatos de mensajes
         if (body.text && !body.messages) {
             // Si es un formato diferente (directamente del componente DeepChat)
-            console.log("Formato directo de DeepChat detectado");
+            console.log("Direct DeepChat format detected");
             messages = [...(body.history || []), { role: 'user', content: body.text }];
         }
 
         // Si no hay mensajes, crear un mensaje vacío para evitar errores
         if (!messages || !Array.isArray(messages) || messages.length === 0) {
-            console.log("No se proporcionaron mensajes válidos, usando mensaje vacío");
-            messages = [{ role: 'user', content: 'Hola' }];
+            console.log("No valid messages provided, using empty message");
+            messages = [{ role: 'user', content: 'Hello' }];
         }
 
         // Si no hay contexto recuperado, intentar recuperarlo ahora
-        if (!retrievedContext || retrievedContext === "Información del museo") {
-            console.log("No se proporcionó contexto, recuperando...");
+        if (!retrievedContext || retrievedContext === "Store information") {
+            console.log("No context provided, retrieving...");
             try {
                 const lastUserMessage = messages.findLast((m: ChatMessage) =>
                     (m.role === 'user' && (m.content || m.text))
@@ -51,19 +54,17 @@ export async function POST(req: NextRequest) {
                     )?.text ||
                     "";
 
-                console.log("Último mensaje del usuario:", lastUserMessage);
+                console.log("Last user message:", lastUserMessage);
 
                 if (lastUserMessage) {
                     const baseUrl = req.nextUrl.origin;
                     const retrieveResponse = await fetch(`${baseUrl}/api/retrieve`, {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json',
-                            'x-language': language,
+                            'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
                             query: lastUserMessage,
-                            language,
                             topK: 3,
                         }),
                     });
@@ -71,17 +72,13 @@ export async function POST(req: NextRequest) {
                     if (retrieveResponse.ok) {
                         const data = await retrieveResponse.json();
                         retrievedContext = data.context || "";
-                        console.log("Contexto recuperado:", retrievedContext);
+                        console.log("Retrieved context:", retrievedContext);
                     }
                 }
             } catch (error) {
-                console.error("Error al recuperar contexto:", error);
+                console.error("Error retrieving context:", error);
             }
         }
-
-        // Validar el idioma
-        const validLanguages = ['es', 'en', 'it'];
-        const lang = validLanguages.includes(language) ? language : 'es';
 
         // Obtener el contexto de la conversación (últimos 6 mensajes)
         const conversationContext = getConversationContext(messages);
@@ -89,47 +86,32 @@ export async function POST(req: NextRequest) {
         // Si no hay contexto recuperado, manejar como caso fallback
         let context = retrievedContext;
         if (!context || typeof context !== 'string' || context.trim() === '') {
-            // Contexto de fallback según el idioma
-            const fallbackContext = {
-                es: 'No tengo información específica sobre esta consulta, pero intentaré ayudarte con lo que sé sobre el museo.',
-                en: 'I don\'t have specific information about this query, but I\'ll try to help you with what I know about the museum.',
-                it: 'Non ho informazioni specifiche su questa richiesta, ma cercherò di aiutarti con quello che so del museo.'
-            };
-
-            context = fallbackContext[lang as keyof typeof fallbackContext];
+            // Default fallback context
+            context = "I don't have specific information about this query, but I'll try to help you with what I know about Twinteraction by Dimensione3.";
         }
 
-        console.log("Generando respuesta con contexto:", context);
+        console.log("Generating response with context:", context);
 
         // Generar respuesta usando OpenAI
         const response = await generateChatResponse(
             conversationContext,
             context,
-            lang
+            lang,
+            systemInstruction
         );
 
-        console.log("Respuesta generada:", response);
+        console.log("Generated response:", response);
 
         // Devolver la respuesta en el formato que espera DeepChat
         return NextResponse.json({ text: response });
 
     } catch (error: any) {
-        console.error('Error al procesar la solicitud de chat:', error);
+        console.error('Error processing chat request:', error);
 
-        // Preparar mensajes de error según el idioma
-        const errorMessages = {
-            es: 'Lo siento, ha ocurrido un error al procesar tu solicitud. Por favor, inténtalo de nuevo más tarde.',
-            en: 'I\'m sorry, an error occurred while processing your request. Please try again later.',
-            it: 'Mi dispiace, si è verificato un errore durante l\'elaborazione della tua richiesta. Per favore riprova più tardi.'
-        };
-
-        const language = req.headers.get('x-language') || 'es';
-        const validLanguages = ['es', 'en', 'it'];
-        const lang = validLanguages.includes(language) ? language : 'es';
-
+        // Simple English error message
         return NextResponse.json({
-            text: errorMessages[lang as keyof typeof errorMessages],
-            error: 'Error al generar respuesta',
+            text: "I'm sorry, an error occurred while processing your request. Please try again later.",
+            error: 'Error generating response',
             details: error.message
         }, { status: 500 });
     }

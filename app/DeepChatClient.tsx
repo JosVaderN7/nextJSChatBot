@@ -6,37 +6,24 @@ import { useState, useEffect } from "react";
 const DeepChat = dynamic(() => import("deep-chat-react").then(mod => mod.DeepChat), { ssr: false });
 
 export default function DeepChatClient() {
-    const [language, setLanguage] = useState('es');
     const [baseUrl, setBaseUrl] = useState('');
 
     useEffect(() => {
-        // Obtener la URL base
+        // Get base URL
         setBaseUrl(window.location.origin);
     }, []);
 
-    const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setLanguage(e.target.value);
-    };
+    // System instruction for encouraging concise responses
+    const systemInstruction = "Provide concise, informative responses about Twinteraction by Dimensione3. Keep answers brief and to the point, preferably under 3 sentences when possible. Focus on specific features and benefits without unnecessary details.";
 
     const welcomeMessages = {
-        es: '👋 ¡Hola! Soy tu guía virtual del Museo. ¿En qué puedo ayudarte hoy?',
-        en: '👋 Hello! I\'m your virtual Museum guide. How can I help you today?',
-        it: '👋 Ciao! Sono la tua guida virtuale del Museo. Come posso aiutarti oggi?'
+        en: '👋 Hello! I\'m TwinterBOT, your Twinteraction product demo assistant. Ask me anything about how Twinteraction can enhance your Matterport tours with interactive elements!'
     };
 
     return (
         <div className="flex flex-col h-full">
-            <div className="flex justify-between items-center p-2 bg-gray-100">
-                <h3 className="text-sm font-medium">Museo Virtual</h3>
-                <select
-                    value={language}
-                    onChange={handleLanguageChange}
-                    className="bg-blue-500 text-white px-3 py-1 rounded"
-                >
-                    <option value="es">ES</option>
-                    <option value="en">EN</option>
-                    <option value="it">IT</option>
-                </select>
+            <div className="flex justify-end items-center p-3 bg-blue-600 text-white">
+                <span className="text-xs opacity-75">Powered by Twinteraction</span>
             </div>
             {baseUrl && (
                 <DeepChat
@@ -45,21 +32,26 @@ export default function DeepChatClient() {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
-                            "x-language": language
                         },
                         additionalBodyProps: {
-                            language: language
+                            systemInstruction: systemInstruction
                         }
                     }}
+                    history={[
+                        { role: 'assistant', text: welcomeMessages.en }
+                    ]}
                     style={{
-                        height: 'calc(100% - 40px)',
+                        height: 'calc(100% - 48px)',
                         width: '100%',
                         borderRadius: '0',
                         border: 'none'
                     }}
-                    introMessage={{
-                        text: welcomeMessages[language as keyof typeof welcomeMessages]
+                    textInput={{
+                        placeholder: {
+                            text: "Ask about Twinteraction features..."
+                        }
                     }}
+                   
                 />
             )}
         </div>

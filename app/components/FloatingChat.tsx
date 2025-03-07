@@ -1,28 +1,15 @@
 "use client";
 
 import { useState } from 'react';
-import LanguageSelector from './LanguageSelector';
 import dynamic from "next/dynamic";
 
 const DeepChatClient = dynamic(() => import("@/app/DeepChatClient"), { ssr: false });
 
 export default function FloatingChat() {
     const [isOpen, setIsOpen] = useState(false);
-    const [language, setLanguage] = useState('es');
 
     const toggleChat = () => {
         setIsOpen(!isOpen);
-    };
-
-    // Mensaje de bienvenida según el idioma seleccionado
-    const getWelcomeMessage = () => {
-        const welcomeMessages = {
-            es: '👋 ¡Hola! Soy tu guía virtual del Museo. ¿En qué puedo ayudarte hoy?',
-            en: '👋 Hello! I\'m your virtual Museum guide. How can I help you today?',
-            it: '👋 Ciao! Sono la tua guida virtuale del Museo. Come posso aiutarti oggi?'
-        };
-
-        return welcomeMessages[language as keyof typeof welcomeMessages];
     };
 
     return (
@@ -30,12 +17,9 @@ export default function FloatingChat() {
             {isOpen ? (
                 <div className="bg-white rounded-lg shadow-lg overflow-hidden chat-transition flex flex-col" style={{ width: '350px', height: '500px' }}>
                     <div className="bg-gray-800 text-white p-2 flex justify-between items-center">
-                        <h3 className="text-sm font-medium">Museo Virtual</h3>
+                <h3 className="text-sm font-medium">TwinterBOT • Dimensione3</h3>
                         <div className="flex items-center">
-                            <LanguageSelector
-                                onLanguageChange={setLanguage}
-                                currentLanguage={language}
-                            />
+                           
                             <button
                                 onClick={toggleChat}
                                 className="ml-2 text-white hover:text-gray-300"

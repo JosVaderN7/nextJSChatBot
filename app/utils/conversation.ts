@@ -1,86 +1,90 @@
 /**
- * Limita los mensajes de la conversación a los más recientes
+ * Limit conversation messages to the most recent ones
  */
 export const getConversationContext = (messages: any[], maxMessages: number = 6) => {
     return messages.slice(-maxMessages);
 };
 
 /**
- * Formatea los datos recuperados del museo para incluirlos en el contexto
+ * Format retrieved Twinteraction data to include in the context
  */
 export const formatRetrievedData = (
     retrievedData: any[],
-    language: string = 'es'
+    language: string = 'en'
 ): string => {
     if (!retrievedData || retrievedData.length === 0) {
-        return 'No hay información disponible sobre este tema.';
+        return 'No information available on this topic.';
     }
 
     let formattedContext = '';
 
-    // Procesar cada resultado recuperado
+    // Process each retrieved result
     retrievedData.forEach((item) => {
         if (!item.metadata) return;
 
         const metadata = item.metadata;
-        const score = item.score ? `(Relevancia: ${Math.round(item.score * 100)}%)` : '';
+        const score = item.score ? `(Relevance: ${Math.round(item.score * 100)}%)` : '';
 
-        // Formatear según el tipo de contenido
+        // Format based on content type
         switch (metadata.type) {
-            case 'exhibit':
-                formattedContext += `EXHIBICIÓN: ${metadata.name || ''}\n`;
-                formattedContext += `DESCRIPCIÓN: ${metadata.description || ''}\n`;
+            case 'room':
+                formattedContext += `FEATURE ROOM: ${metadata.name || ''}\n`;
+                formattedContext += `DESCRIPTION: ${metadata.description || ''}\n`;
 
                 if (metadata.location) {
-                    formattedContext += `UBICACIÓN: ${metadata.location || ''}\n`;
+                    formattedContext += `LOCATION IN TOUR: ${metadata.location || ''}\n`;
                 }
 
                 if (metadata.historical_context) {
-                    formattedContext += `CONTEXTO HISTÓRICO: ${metadata.historical_context || ''}\n`;
+                    formattedContext += `TECHNICAL DETAILS: ${metadata.historical_context || ''}\n`;
                 }
 
                 if (metadata.fun_facts) {
-                    formattedContext += `DATOS CURIOSOS: ${metadata.fun_facts}\n`;
+                    formattedContext += `HIGHLIGHTS: ${metadata.fun_facts}\n`;
                 }
                 break;
 
-            case 'tour':
-                formattedContext += `TOUR: ${metadata.name || ''}\n`;
-                formattedContext += `DURACIÓN: ${metadata.duration || ''}\n`;
+            case 'feature':
+                formattedContext += `CAPABILITY: ${metadata.name || ''}\n`;
+                formattedContext += `IMPLEMENTATION: ${metadata.duration || ''}\n`;
 
                 if (metadata.recommended_for) {
-                    formattedContext += `RECOMENDADO PARA: ${metadata.recommended_for}\n`;
+                    formattedContext += `IDEAL FOR: ${metadata.recommended_for}\n`;
                 }
                 break;
 
-            case 'general_info':
-                formattedContext += `INFORMACIÓN GENERAL DEL MUSEO:\n`;
+            case 'company_info':
+                formattedContext += `COMPANY INFORMATION:\n`;
 
-                if (metadata.opening_hours) {
-                    formattedContext += `HORARIO: ${metadata.opening_hours || ''}\n`;
+                if (metadata.company_name) {
+                    formattedContext += `COMPANY: ${metadata.company_name || ''}\n`;
                 }
 
-                if (metadata.facilities) {
-                    formattedContext += `INSTALACIONES: ${metadata.facilities}\n`;
+                if (metadata.contact_info) {
+                    formattedContext += `CONTACT: ${metadata.contact_info}\n`;
                 }
 
-                if (metadata.tickets) {
+                if (metadata.services) {
+                    formattedContext += `SERVICES: ${metadata.services}\n`;
+                }
+
+                if (metadata.products) {
                     try {
-                        const tickets = JSON.parse(metadata.tickets);
-                        formattedContext += `ENTRADAS: `;
-                        Object.keys(tickets).forEach(key => {
-                            formattedContext += `${key}: ${tickets[key]}, `;
+                        const products = JSON.parse(metadata.products);
+                        formattedContext += `PRODUCTS: `;
+                        Object.keys(products).forEach(key => {
+                            formattedContext += `${key}: ${products[key]}, `;
                         });
                         formattedContext = formattedContext.slice(0, -2) + '\n';
                     } catch (e) {
-                        formattedContext += `ENTRADAS: ${metadata.tickets}\n`;
+                        formattedContext += `PRODUCTS: ${metadata.products}\n`;
                     }
                 }
                 break;
 
             default:
-                // Para otros tipos de datos o metadatos genéricos
-                formattedContext += `INFORMACIÓN: ${JSON.stringify(metadata)}\n`;
+                // For other data types or generic metadata
+                formattedContext += `INFORMATION: ${JSON.stringify(metadata)}\n`;
         }
 
         formattedContext += `\n`;

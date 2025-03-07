@@ -4,73 +4,70 @@ import { querySimilar } from '@/app/utils/pinecone';
 import { formatRetrievedData } from '@/app/utils/conversation';
 
 /**
- * Busca información relevante basada en la consulta del usuario
+ * Searches for relevant information based on the user's query
  */
 export async function POST(req: NextRequest) {
     try {
-        console.log("Recibida solicitud de recuperación");
+        console.log("Received retrieval request");
 
-        // Obtener datos de la solicitud
+        // Get request data
         const body = await req.json();
-        console.log("Body de la solicitud:", JSON.stringify(body, null, 2));
+        console.log("Request body:", JSON.stringify(body, null, 2));
 
-        const { query, language = 'es', topK = 3 } = body;
+        const { query, topK = 3 } = body;
 
         if (!query || typeof query !== 'string') {
-            console.log("Error: Consulta inválida", query);
+            console.log("Error: Invalid query", query);
             return NextResponse.json({
-                error: 'Se requiere una consulta válida'
+                error: 'A valid query is required'
             }, { status: 400 });
         }
 
-        // Validar el idioma
-        const validLanguages = ['es', 'en', 'it'];
-        const lang = validLanguages.includes(language) ? language : 'es';
-        console.log(`Procesando consulta "${query}" en idioma ${lang}`);
+        // English only
+        const lang = 'en';
+        console.log(`Processing query "${query}"`);
 
-        // Generar embedding para la consulta
-        console.log("Generando embedding para la consulta");
+        // Generate embedding for the query
+        console.log("Generating embedding for the query");
         const queryEmbedding = await generateEmbedding(query);
-        console.log("Embedding generado correctamente");
+        console.log("Embedding generated successfully");
 
-        // Filtrar por idioma
+        // Filter for English content
         const filter = {
-            lang: lang
+            lang: 'en'
         };
-        console.log("Consultando Pinecone con filtro:", filter);
+        console.log("Querying Pinecone with filter:", filter);
 
-        // Buscar vectores similares en Pinecone
+        // Search for similar vectors in Pinecone
         const matches = await querySimilar(queryEmbedding, topK, filter);
-        console.log("Respuesta de Pinecone:", matches ? matches.length : 0, "resultados");
+        console.log("Pinecone response:", matches ? matches.length : 0, "results");
 
-        // Si no hay resultados, devolver respuesta predeterminada
+        // If no results, return default response
         if (!matches || matches.length === 0) {
-            console.log("No se encontraron resultados relevantes");
+            console.log("No relevant results found");
             return NextResponse.json({
                 results: [],
-                context: 'No se encontró información relevante para esta consulta.',
-                query,
-                language: lang
+                context: 'No relevant information found for this query.',
+                query
             });
         }
 
-        // Formatear los datos recuperados
-        console.log("Formateando datos recuperados");
+        // Format retrieved data
+        console.log("Formatting retrieved data");
         const formattedContext = formatRetrievedData(matches, lang);
-        console.log("Contexto formateado:", formattedContext);
+        console.log("Formatted context:", formattedContext);
 
-        // Devolver resultados
+        // Return results
         return NextResponse.json({
             results: matches,
             context: formattedContext,
-            query,
-            language: lang
+            query
         });
 
     } catch (error: any) {
-        console.error('Error al procesar la solicitud de recuperación:', error);
+        console.error('Error processing retrieval request:', error);
         return NextResponse.json({
-            error: 'Error al recuperar información',
+            error: 'Error retrieving information',
             message: error.message,
             stack: error.stack
         }, { status: 500 });
